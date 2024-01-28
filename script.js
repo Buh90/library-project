@@ -2,6 +2,7 @@ const openModalBtn = document.querySelector(".circle");
 const modal = document.querySelector("dialog");
 const modalSubmitButton = document.querySelector("dialog button");
 const bookList = [];
+
 function Book(author, title, pages, status) {
   this.author = author;
   this.title = title;
@@ -10,28 +11,50 @@ function Book(author, title, pages, status) {
 }
 
 openModalBtn.addEventListener("click", () => {
+  resetModal();
   modal.showModal();
 });
 
-modalSubmitButton.addEventListener("click", function (e) {
-  if (checkFormValidity()) {
-    createBook();
-    renderBooks();
-  } else {
+document.querySelector("#pages").addEventListener("keydown", (e) => {
+  const regEx = /[0-9]/;
+  const validKey = [
+    "ArrowRight",
+    "ArrowLeft",
+    "Tab",
+    "Backspace",
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+  ];
+  if (validKey.every((key) => key != e.key)) {
     e.preventDefault();
-    alert("Compilazione errata!");
   }
 });
 
-function checkFormValidity() {
-  return false;
-}
-
-function createBook() {
-  const bookAuthor = document.querySelector("#author").value;
+modalSubmitButton.addEventListener("click", function (e) {
+  let bookAuthor = document.querySelector("#author").value;
   const bookTitle = document.querySelector("#title").value;
-  const bookPages = document.querySelector("#pages").value;
+  let bookPages = document.querySelector("#pages").value;
   const bookStatus = document.querySelector("#status").checked;
+  bookAuthor === "" ? (bookAuthor = "author unknown") : bookAuthor;
+  bookPages === "" ? (bookPages = "???") : bookPages;
+  if (bookTitle !== "") {
+    createBook(bookAuthor, bookTitle, bookPages, bookStatus);
+    renderBooks();
+  } else {
+    e.preventDefault();
+    alert("Missing Title");
+  }
+});
+
+function createBook(bookAuthor, bookTitle, bookPages, bookStatus) {
   const book = new Book(bookAuthor, bookTitle, bookPages, bookStatus);
   bookList.push(book);
 }
@@ -72,4 +95,10 @@ function renderBooks() {
   }
 }
 
+function resetModal() {
+  document.querySelector("#author").value = "";
+  document.querySelector("#title").value = "";
+  document.querySelector("#pages").value = "";
+  document.querySelector("#status").checked = false;
+}
 // modal.showModal();
