@@ -1,7 +1,13 @@
 :root {
-  --dark-blue: rgb(0, 24, 58);
-  --light-grey: rgb(240, 240, 240);
-  --white: rgb(255, 255, 255);
+  --color: rgb(0, 24, 58);
+  --background-1: rgb(240, 240, 240);
+  --background-2: rgb(255, 255, 255);
+}
+
+[theme="dark"] {
+  --color: rgb(240, 240, 240);
+  --background-1: rgb(0, 24, 58);
+  --background-2: rgb(0, 0, 0);
 }
 
 * {
@@ -20,8 +26,8 @@ HEADER
 
 header {
   width: 100%;
-  color: var(--dark-blue);
-  background-color: var(--white);
+  color: var(--color);
+  background-color: var(--background-2);
   padding: 1.2rem 4rem;
   display: flex;
   flex-wrap: wrap;
@@ -47,7 +53,7 @@ header {
   width: 2rem;
   height: 2rem;
   border-radius: 3px;
-  border: solid 1px var(--dark-blue);
+  border: solid 1px var(--color);
   background-repeat: no-repeat;
   background-position: center;
   background-size: 70%;
@@ -65,7 +71,16 @@ header {
 .view-mode .row-view:checked {
   box-shadow: inset -0.1rem -0.1rem 0.1rem rgba(255, 255, 255),
     inset 0.1rem 0.1rem 0.1rem rgba(0, 0, 0, 0.2);
-  background-color: var(--light-grey);
+  background-color: var(--background-1);
+}
+
+[theme="dark"] .view-mode .block-view,
+[theme="dark"] .view-mode .row-view,
+[theme="dark"] .view-mode .block-view:checked,
+[theme="dark"] .view-mode .row-view:checked,
+[theme="dark"] #sort {
+  box-shadow: none;
+  border-color: var(--color);
 }
 
 #sort {
@@ -82,7 +97,7 @@ header {
   position: absolute;
   top: 2.5rem;
   right: 0;
-  border: 2px solid var(--dark-blue);
+  border: 2px solid var(--color);
 }
 
 .sort-button-box.hide {
@@ -95,18 +110,18 @@ header {
   padding: 0.4rem;
   border: none;
   border-radius: 0;
-  background-color: var(--light-grey);
-  color: var(--dark-blue);
+  background-color: var(--background-1);
+  color: var(--color);
   font-family: montserrat, sans-serif;
   cursor: pointer;
 }
 
 .sort-button:nth-last-of-type(n + 2) {
-  border-bottom: 1px solid var(--dark-blue);
+  border-bottom: 1px solid var(--color);
 }
 
 .sort-button:hover {
-  background-color: var(--white);
+  background-color: var(--background-2);
 }
 
 .theme-toggle {
@@ -133,8 +148,8 @@ MAIN
   width: 2.2rem;
   height: 2.2rem;
   border-radius: 50%;
-  border: var(--dark-blue) 3px solid;
-  color: var(--dark-blue);
+  border: var(--color) 3px solid;
+  color: var(--color);
   background-color: transparent;
   font-size: 2rem;
   display: grid;
@@ -149,7 +164,7 @@ MAIN
 
 .vertical-plus-line,
 .horizontal-plus-line {
-  background-color: var(--dark-blue);
+  background-color: var(--color);
   height: 0.2rem;
   width: 1.1rem;
   position: absolute;
@@ -167,7 +182,7 @@ MAIN
 /* Card (Row view) */
 
 main {
-  background-color: var(--light-grey);
+  background-color: var(--background-1);
   width: 100%;
   min-height: 100vh;
   display: grid;
@@ -178,17 +193,30 @@ main {
 }
 
 .card {
-  background-color: white;
+  color: var(--color);
   width: 100%;
   display: flex;
   align-items: center;
   text-align: left;
   position: relative;
-  padding-right: 3rem;
+  padding-right: 5rem;
   min-height: 2.2rem;
   height: min-content;
-  border-bottom: 1px solid var(--dark-blue);
+  border-bottom: 1px solid var(--color);
   transition: all 0.5s;
+}
+
+.delete-icon {
+  position: absolute;
+  width: 1.4rem;
+  top: 25%;
+  right: 1.8rem;
+  cursor: pointer;
+}
+
+.delete-icon:hover {
+  animation: shake 0.2s linear 3;
+  transform: scale(1.2);
 }
 
 .book-author,
@@ -199,7 +227,7 @@ main {
 
 .book-author {
   flex: 0 1 10rem;
-  padding-left: 2rem;
+  padding-left: 4rem;
 }
 
 .book-title {
@@ -222,13 +250,13 @@ main {
 .book-status {
   position: absolute;
   bottom: 0.2rem;
-  right: 2.6rem;
+  right: 4.6rem;
   appearance: none;
   width: 1rem;
   height: 1rem;
   background-color: red;
   border-radius: 50%;
-  outline: 3px solid var(--white);
+  outline: 3px solid var(--background-1);
   cursor: pointer;
   box-shadow: inset -2px -2px 2px rgba(0, 0, 0, 0.5),
     inset 2px 2px 2px rgba(255, 255, 255, 0.5);
@@ -255,7 +283,7 @@ main {
 /* Card (block view) */
 
 main.block {
-  background-color: var(--light-grey);
+  background-color: var(--background-1);
   width: 100%;
   min-height: 100vh;
   display: grid;
@@ -268,22 +296,30 @@ main.block {
 
 .card.block {
   display: block;
-  background-color: white;
+  background-color: var(--background-2);
   height: auto;
   width: 15rem;
   border-radius: 5px;
   padding: 1.5rem 1.5rem 3.5rem;
   box-shadow: 2px 2px 2px rgb(0, 0, 0, 0.2);
   text-align: center;
-  outline: solid 2px var(--dark-blue);
+  outline: solid 2px var(--color);
   outline-offset: -8px;
   position: relative;
   transition: all 0.5s;
+  border: none;
 }
 
 .card.block:hover {
   transform: scale(1.02);
   box-shadow: 3px 3px 7px 2px rgb(0, 0, 0, 0.11);
+}
+
+.card.block .delete-icon {
+  position: absolute;
+  width: 1.4rem;
+  top: 1.2rem;
+  right: 1.2rem;
 }
 
 .card.block p {
@@ -330,7 +366,7 @@ input[type="radio"] {
   position: relative;
   width: 1.1em;
   font-size: 1.3rem;
-  color: var(--dark-blue);
+  color: var(--color);
   cursor: pointer;
 }
 
@@ -355,7 +391,8 @@ DIALOG
 --------------- */
 
 dialog {
-  background-color: var(--light-grey);
+  background-color: var(--background-1);
+  color: var(--color);
   border: none;
   width: min(80%, 20rem);
   position: absolute;
@@ -364,7 +401,7 @@ dialog {
   margin: auto;
   padding: 2rem;
   border-radius: 10px;
-  outline: var(--dark-blue) 2px solid;
+  outline: var(--color) 2px solid;
   outline-offset: -8px;
 }
 
@@ -375,7 +412,7 @@ dialog::backdrop {
 
 form > p:first-of-type {
   text-align: center;
-  border-bottom: solid var(--dark-blue) 1px;
+  border-bottom: solid var(--color) 1px;
   padding-bottom: 0.4rem;
 }
 
@@ -409,7 +446,7 @@ form > p:first-of-type {
 }
 
 .check-block input {
-  accent-color: var(--dark-blue);
+  accent-color: var(--color);
 }
 
 .rating-block {
@@ -430,13 +467,39 @@ dialog button {
   width: 100%;
   margin-top: 0.7rem;
   height: 2rem;
-  background-color: var(--dark-blue);
+  background-color: var(--color);
   border-radius: 5px;
-  color: white;
+  color: var(--background-1);
   cursor: pointer;
   border: none;
 }
 
 dialog button:hover {
-  background-color: blue;
+  background-color: rgb(0, 0, 133);
+}
+
+[theme="dark"] dialog button:hover {
+  color: var(--color);
+}
+
+/* ------------
+ANIMATION
+-------------*/
+
+@keyframes shake {
+  0% {
+    transform: rotate(0deg) scale(1.2);
+  }
+  25% {
+    transform: rotate(-15deg) scale(1.2);
+  }
+  50% {
+    transform: rotate(0deg) scale(1.2);
+  }
+  75% {
+    transform: rotate(15deg) scale(1.2);
+  }
+  100% {
+    transform: rotate(0deg) scale(1.2);
+  }
 }

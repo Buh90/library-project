@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20.11 14.04" fill="rgb(240, 240, 240)">
+
+  <rect class="cls-1" x="4.89" width="15.22" height="2.83"/>
+  <rect class="cls-1" x="4.89" y="5.6" width="15.22" height="2.83"/>
+  <rect class="cls-1" x="4.89" y="11.21" width="15.22" height="2.83"/>
+  <rect class="cls-1" width="2.83" height="2.83" transform="translate(2.83 2.83) rotate(180)"/>
+  <rect class="cls-1" y="5.6" width="2.83" height="2.83" transform="translate(2.83 14.04) rotate(180)"/>
+  <rect class="cls-1" y="11.21" width="2.83" height="2.83" transform="translate(2.83 25.25) rotate(180)"/>
+</svg>

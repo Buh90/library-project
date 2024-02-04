@@ -1,5 +1,6 @@
 // Global variables
 
+const themeToggle = document.querySelector(".theme-toggle");
 const viewSelector = document.querySelector(".view-mode");
 const openModalBtn = document.querySelector(".circle");
 const openSortBoxButton = document.querySelector("#sort");
@@ -10,61 +11,87 @@ const modalSubmitButton = document.querySelector("#submitButton");
 const modalCancelButton = document.querySelector("#cancelButton");
 const modalRatingField = document.querySelector(".rating-block");
 let bookList = [
-  {
-    author: "B",
-    title: "a",
-    pages: "7",
-    status: false,
-    rating: [false, false, false, false, false],
-  },
-  {
-    author: "E",
-    title: "d",
-    pages: "5",
-    status: true,
-    rating: [false, false, true, false, false],
-  },
-  {
-    author: "F",
-    title: "c",
-    pages: "1",
-    status: false,
-    rating: [false, true, false, false, false],
-  },
-  {
-    author: "A",
-    title: "f",
-    pages: "2",
-    status: true,
-    rating: [false, false, false, true, false],
-  },
-  {
-    author: "C",
-    title: "b",
-    pages: "4",
-    status: false,
-    rating: [false, false, false, false, false],
-  },
-  {
-    author: "G",
-    title: "g",
-    pages: "3",
-    status: false,
-    rating: [false, false, false, false, true],
-  },
-  {
-    author: "D",
-    title: "e",
-    pages: "6",
-    status: true,
-    rating: [true, false, false, false, false],
-  },
+  // {
+  //   author: "B",
+  //   title: "a",
+  //   pages: "7",
+  //   status: false,
+  //   rating: [false, false, false, false, false],
+  // },
+  // {
+  //   author: "E",
+  //   title: "d",
+  //   pages: "5",
+  //   status: true,
+  //   rating: [false, false, true, false, false],
+  // },
+  // {
+  //   author: "F",
+  //   title: "c",
+  //   pages: "1",
+  //   status: false,
+  //   rating: [false, true, false, false, false],
+  // },
+  // {
+  //   author: "A",
+  //   title: "f",
+  //   pages: "2",
+  //   status: true,
+  //   rating: [false, false, false, true, false],
+  // },
+  // {
+  //   author: "C",
+  //   title: "b",
+  //   pages: "4",
+  //   status: false,
+  //   rating: [false, false, false, false, false],
+  // },
+  // {
+  //   author: "G",
+  //   title: "g",
+  //   pages: "3",
+  //   status: false,
+  //   rating: [false, false, false, false, true],
+  // },
+  // {
+  //   author: "D",
+  //   title: "e",
+  //   pages: "6",
+  //   status: true,
+  //   rating: [true, false, false, false, false],
+  // },
 ];
 const isReadButton = document.querySelector("#status");
 
-renderBooks();
+// Local storage
+if (localStorage.books) {
+  bookList = JSON.parse(localStorage.books);
+  renderBooks();
+} else {
+  localStorage.setItem("books", JSON.stringify(bookList));
+}
 
 // View mode selector
+
+themeToggle.addEventListener("click", () => {
+  const blockInput = document.querySelector(".block-view");
+  const rowInput = document.querySelector(".row-view");
+  const bookIcons = document.querySelectorAll(".book-icon");
+  if (document.querySelector("html").getAttribute("theme") === "dark") {
+    document.querySelector("html").setAttribute("theme", "");
+    blockInput.style.backgroundImage = "url(./image/block-view.svg)";
+    rowInput.style.backgroundImage = "url(./image/row-view.svg)";
+    openSortBoxButton.style.backgroundImage = "url(./image/swap-vertical.svg)";
+    bookIcons.forEach((icon) => (icon.src = "./image/book.svg"));
+  } else {
+    document.querySelector("html").setAttribute("theme", "dark");
+    blockInput.style.backgroundImage = "url(./image/block-view-dark.svg)";
+    rowInput.style.backgroundImage = "url(./image/row-view-dark.svg)";
+    openSortBoxButton.style.backgroundImage =
+      "url(./image/swap-vertical-dark.svg)";
+    bookIcons.forEach((icon) => (icon.src = "./image/book-dark.svg"));
+  }
+});
 
 viewSelector.addEventListener("click", () => {
   if (document.querySelector(".block-view").checked) {
@@ -180,7 +207,6 @@ function renderBooks() {
     const bookIndex = bookList.indexOf(book);
     const card = document.createElement("div");
     card.classList.add("card");
-    // card.setAttribute("data-book-number", `${bookIndex}`);
 
     if (document.querySelector(".block-view").checked) {
       document.querySelector("main").classList.add("block");
@@ -190,7 +216,9 @@ function renderBooks() {
       card.classList.remove("block");
     }
 
-    card.innerHTML += ` <p class="book-author">${sanitizeInput(book.author)}</p>
+    card.innerHTML += ` <img class="delete-icon bin-${bookIndex}" src="./image/bin.svg" alt=""><p class="book-author">${sanitizeInput(
+      book.author
+    )}</p>
         <p class="book-title">${sanitizeInput(book.title)}</p>
         <p class="book-pages">Pages: <span class="pages">${sanitizeInput(
           book.pages
@@ -227,14 +255,23 @@ function renderBooks() {
           type="checkbox" ${book.status ? "checked" : ""}
         />`;
     document.querySelector("main").appendChild(card);
+    const deleteBtn = document.querySelector(`.bin-${bookIndex}`);
+    deleteBtn.addEventListener("click", function () {
+      removeCard(card, bookIndex);
+      localStorage.books = JSON.stringify(bookList);
+    });
+
     const checkReadBtn = document.querySelector(
       `.book-status.status-${bookIndex}`
     );
-    checkReadBtn.addEventListener("click", () =>
-      bookList[bookIndex].status
-        ? (bookList[bookIndex].status = false)
-        : (bookList[bookIndex].status = true)
-    );
+    checkReadBtn.addEventListener("click", () => {
+      if (bookList[bookIndex].status) {
+        bookList[bookIndex].status = false;
+      } else {
+        bookList[bookIndex].status = true;
+      }
+      localStorage.books = JSON.stringify(bookList);
+    });
     const checkRatingBtn = Array.from(
       document.querySelectorAll(`[name="rating-${bookIndex}"]`)
     );
@@ -242,9 +279,11 @@ function renderBooks() {
       input.addEventListener("click", function () {
         book.rating = [false, false, false, false, false];
         book.rating[5 - this.value] = true;
+        localStorage.books = JSON.stringify(bookList);
       });
     }
   }
+  localStorage.books = JSON.stringify(bookList);
 }
 
 // Sorting functions
@@ -315,11 +354,14 @@ function sortRule(property, order = "incr") {
   };
 }
 
+function removeCard(card, bookIndex) {
+  card.remove();
+  bookList.splice(bookIndex, 1);
+  renderBooks();
+}
+
 function sanitizeInput(inputValue) {
   const div = document.createElement("div");
   div.textContent = inputValue;
   return div.innerHTML;
 }
-// delete book button
-// local storage
-// theme
